@@ -32,9 +32,11 @@ A cheat sheet for uncommon Git commands
 | `git branch --set-upstream-to repo/branch`    | Set an upstream branch in the current repository |
 | `git switch foo`                              | Switch to a branch |
 | `git switch -c\|--create foo`                 | Create and switch to a branch |
-| `git checkout foo.js`                         | Undo all changes on the foo.js file |
-| `git checkout foo`                            | Use `git switch` instead |
-| `git checkout -b foo`                         | Use `git switch -c` instead |
+| `git checkout file.js`                        | Acts like `git reset --hard branch -- file.js`, replaces file in the three trees, does not do a merge, not working-tree safe |
+| `git checkout foo`                            | Moves the HEAD to point to the commit that the branch is pointing to, also moves the three trees, it's more Working Tree safe because it also does a merge, use `git switch` instead |
+| `git checkout -b foo`                         | To create and switch to a branch, use `git switch -c` instead |
+| `git switch foo`                              | To switch to a branch |
+| `git switch --create foo`                     | To create and switch to a branch |
 | `git merge foo`                               | Merge branch into current branch 
 
 ## Pulling
@@ -52,6 +54,8 @@ A cheat sheet for uncommon Git commands
 | `git rm --force file.txt`                     | Unstage and delete file |
 | `git reset HEAD`                              | Reset changes in the index area and use HEAD as the source, use `git restore --staged` instead |
 | `git reset --hard HEAD`                       | Unstage and delete changes in index/staging area and working directory |
+| `git reset file.txt`                          | Unstange a file, more specifically restore the state of the file in the staging area with the one in the HEAD as a source, sames as `git reset --mixed file.txt`|
+| `git reset eb34f -- file.txt`                 | Unstange a file, more specifically restore the state of the file in the staging area with the one in the commit eb34f as a source, sames as `git reset eb34f --mixed file.txt`|
 | `git restore --staged files.txt`              | Restore changes to one or more files in the staging area, using the HEAD as a source |
 | `git restore --staged --worktree files.txt`   | Restore changes to one or more files in the staging and working area, using the HEAD as a source |
 | `git clean -f\|--force -d`                    | Recursively remove untracked files from the working tree |
@@ -80,7 +84,7 @@ A cheat sheet for uncommon Git commands
 | - | - |
 | `git diff`                                | See difference between working area and current branch |
 | `git diff HEAD HEAD~2`                    | See difference between te current commit and two previous commits |
-| `git diff main other`                   | See difference between two branches |
+| `git diff main other`                     | See difference between two branches |
 
 ## View
 | Command | Description |
