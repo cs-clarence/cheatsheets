@@ -50,8 +50,9 @@ A cheat sheet for uncommon Git commands
 | `git add file.txt`                            | Stage file |
 | `git add --patch file.txt`                    | Stage some but not all changes in a file |
 | `git mv file1.txt file2.txt`                  | Move/rename file |
-| `git rm --cached file.txt`                    | Unstage file |
-| `git rm --force file.txt`                     | Unstage and delete file |
+| `git rm --cached file.txt`                    | Remove the file from the index |
+| `git rm file.txt`                             | Remove the file from the index and working directory, but will warn you if you have unsaved changes |
+| `git rm --force file.txt`                     | Unstage and delete file, even the files with unsaved changes |
 | `git reset HEAD`                              | Reset changes in the index area and use HEAD as the source, use `git restore --staged` instead |
 | `git reset --hard HEAD`                       | Unstage and delete changes in index/staging area and working directory |
 | `git reset file.txt`                          | Unstange a file, more specifically restore the state of the file in the staging area with the one in the HEAD as a source, sames as `git reset --mixed file.txt`|
