@@ -30,13 +30,11 @@ A cheat sheet for uncommon Git commands
 | `git branch foo`                              | Create a new branch |
 | `git branch -d foo`                           | Deletes a branch |
 | `git branch --set-upstream-to repo/branch`    | Set an upstream branch in the current repository |
-| `git switch foo`                              | Switch to a branch |
-| `git switch -c\|--create foo`                 | Create and switch to a branch |
 | `git checkout file.js`                        | Acts like `git reset --hard branch -- file.js`, replaces file in the three trees, does not do a merge, not working-tree safe |
 | `git checkout foo`                            | Moves the HEAD to point to the commit that the branch is pointing to, also moves the three trees, it's more Working Tree safe because it also does a merge, use `git switch` instead |
 | `git checkout -b foo`                         | To create and switch to a branch, use `git switch -c` instead |
 | `git switch foo`                              | To switch to a branch |
-| `git switch --create foo`                     | To create and switch to a branch |
+| `git switch --create\|-c foo`                 | To create and switch to a branch |
 | `git merge foo`                               | Merge branch into current branch 
 
 ## Pulling
@@ -97,7 +95,7 @@ A cheat sheet for uncommon Git commands
 | `git show HEAD`                           | Show the current commit |
 | `git show HEAD^` or `git show HEAD~1`     | Show the previous commit |
 | `git show HEAD^^` or `git show HEAD~2`    | Show the commit going back two commits |
-| `git show main`                         | Show the last commit in a branch |
+| `git show main`                           | Show the last commit in a branch |
 | `git show 5720fdf`                        | Show named commit |
 | `git blame file.txt`                      | See who changed each line and when |
 
@@ -126,10 +124,10 @@ A cheat sheet for uncommon Git commands
 ## Tags
 | Command | Description |
 | - | - |
-| `git tag`                                            | List all tags |
-| `git tag -a\|--annotate 0.0.1 -m\|--message "Message"` | Create a tag |
-| `git tag -d\|--delete 0.0.1`                          | Delete a tag |
-| `git push --tags`                                    | Push tags to remote repository |
+| `git tag`                                                 | List all tags |
+| `git tag -a\|--annotate 0.0.1 -m\|--message "Message"`    | Create a tag |
+| `git tag -d\|--delete 0.0.1`                              | Delete a tag |
+| `git push --tags`                                         | Push tags to remote repository |
 
 ## Remote
 | Command | Description |
@@ -138,14 +136,32 @@ A cheat sheet for uncommon Git commands
 | `git remote show origin`                  | Show remote repository details |
 | `git remote add upstream <url>`           | Add remote upstream repository |
 | `git fetch upstream`                      | Fetch all remote branches |
-| `git rebase upstream/main`              | Refresh main branch from upstream |
+| `git rebase upstream/main`                | Refresh main branch from upstream |
 | `git remote -v`                           | List remote repositories |
 | `git push --tags`                         | Push tags to remote repository |
 
 ## Submodules
+- Submodules are a way to incorporate a git repository as a subdirectory in your repository.
+- Git knows which are submodules in your repo.
+- Submodules are added to your commit but are not tracked by git. The content inside are not added to the commit.
+- When you add a submodule to your repository using `submodule add`, files are not pulled by default.
 | Command | Description |
 | - | - |
-| `git submodule status`                    | Check status of all submodules |
+| `git clone --recurse-submodules <url> [name]`                 | Clone a repository, download it's contents, as well as the submodules inside it |
+| `git submodule add <url> [name]`                              | Add a submodule to your repository, adds the submodule to the .gitmodules file which git tracks |
+| `git submodule status`                                        | Check status of all added submodules |
+| `git submodule sync`                                          | Syncs the submodule if there are any changes to the upstream repo such as URL changes |
+| `git submodule init`                                          | Initialize the git configuration file with the added submodules |
+| `git submodule update`                                        | Downloads the content of the submodule |
+| `git submodule update --init [path to sm]`                    | Initalize the config file first then download the contents, if path to submodule is not specified, applies to all submodule |
+| `git submodule update --recursive [path to sm]`               | Download content of the submodule as well as the content of the submodules inside them, if path to submodule is not specified, applies to all submodule |
+| `git submodule update --init --recursive [path to sm]`        | Initialize the config file, download recursively, if path to submodule is not specified, applies to all submodule |
+| `git submodule update --remote [path to sm]`                  | Pull the updates in remote tracking branches (assumes master branch is tracking branch), if path to submodule is not specified, applies to all submodule |
+| `git config --local submodule.<submodule-name>.branch <tracking branch>`                  | Set which branch to track in a submodule locally, not tracked by git |
+| `git config --local -f .gitmodules submodule.<submodule-name>.branch <tracking branch>`   | Set which branch to track in a submodule locally and add reflect the change to .gitmodules file so other it can be tracked by git |
+
+### NOTE:
+- When using `git submodule update --recursive` to fetch updates from remote tracking branch, it best to add `--init` flag to be on the safe side as the newest commit might have added a new submodule which is needed to be initialized.
 
 - Pull submodules
   1. `git submodule sync`
