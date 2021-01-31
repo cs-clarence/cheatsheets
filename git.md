@@ -145,6 +145,7 @@ A cheat sheet for uncommon Git commands
 - Git knows which are submodules in your repo.
 - Submodules are added to your commit but are not tracked by git. The content inside are not added to the commit.
 - When you add a submodule to your repository using `submodule add`, files are not pulled by default.
+
 | Command | Description |
 | - | - |
 | `git clone --recurse-submodules <url> [name]`                 | Clone a repository, download it's contents, as well as the submodules inside it |
@@ -157,6 +158,7 @@ A cheat sheet for uncommon Git commands
 | `git submodule update --recursive [path to sm]`               | Download content of the submodule as well as the content of the submodules inside them, if path to submodule is not specified, applies to all submodule |
 | `git submodule update --init --recursive [path to sm]`        | Initialize the config file, download recursively, if path to submodule is not specified, applies to all submodule |
 | `git submodule update --remote [path to sm]`                  | Pull the updates in remote tracking branches (assumes master branch is tracking branch), if path to submodule is not specified, applies to all submodule |
+| `git pull --recurse-submodules`                               | Does a`git pull` then runs `submodule update --recursive` right after` |
 | `git config --local submodule.<submodule-name>.branch <tracking branch>`                  | Set which branch to track in a submodule locally, not tracked by git |
 | `git config --local -f .gitmodules submodule.<submodule-name>.branch <tracking branch>`   | Set which branch to track in a submodule locally and add reflect the change to .gitmodules file so other it can be tracked by git |
 
