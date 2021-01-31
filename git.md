@@ -158,12 +158,17 @@ A cheat sheet for uncommon Git commands
 | `git submodule update --recursive [path to sm]`               | Download content of the submodule as well as the content of the submodules inside them, if path to submodule is not specified, applies to all submodule |
 | `git submodule update --init --recursive [path to sm]`        | Initialize the config file, download recursively, if path to submodule is not specified, applies to all submodule |
 | `git submodule update --remote [path to sm]`                  | Pull the updates in remote tracking branches (assumes master branch is tracking branch), if path to submodule is not specified, applies to all submodule |
-| `git pull --recurse-submodules`                               | Does a`git pull` then runs `submodule update --recursive` right after` |
+| `git pull --recurse-submodules`                               | Does a`git pull` then runs `submodule update --recursive` right after |
+| `git push --recurse-submodules check`                         | Does a`git push` to your repository and submodules, the `check` option makes the the push fail if push on submodules fail |
+| `git push --recurse-submodules on-demand`                     | Does a`git push` to your inside the submodule folders first then into the main repository, will not continue pushing the main if one push in a submodule fails |
 | `git config --local submodule.<submodule-name>.branch <tracking branch>`                  | Set which branch to track in a submodule locally, not tracked by git |
 | `git config --local -f .gitmodules submodule.<submodule-name>.branch <tracking branch>`   | Set which branch to track in a submodule locally and add reflect the change to .gitmodules file so other it can be tracked by git |
+| `git submodule update --remote --merge [path to sm]`          | Fetch the updates of the submodule then merge, applies to all submodule if no path is specified  | 
+| `git submodule update --remote --rebase [path to sm]`         | Fetch the updates of the submodule then rebase, applies to all submodule if no path is specified  | 
 
 ### NOTE:
 - When using `git submodule update --recursive` to fetch updates from remote tracking branch, it best to add `--init` flag to be on the safe side as the newest commit might have added a new submodule which is needed to be initialized.
+- You can treat submodules as their own repositories, you don't have to use the submodule commands, just go inside the submodule folders and manage them there.
 
 - Pull submodules
   1. `git submodule sync`
