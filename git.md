@@ -43,6 +43,10 @@ A cheat sheet for uncommon Git commands
 | `git pull --rebase --prune`               | Get latest, rebase any changes not checked in and delete branches that no longer exist | 
 
 ## Staged Changes
+- `--soft` - only affects file in the `HEAD`
+- `--mixed` - only affects files in the `HEAD` and the staging/indexing area
+- `--hard`- affects the `HEAD`, staging/indexing area, and the working tree
+
 | Command | Description |
 | - | - |
 | `git add file.txt`                            | Stage file |
