@@ -1,2 +1,2 @@
 - Sources
-    - [Devhints Semver Cheatsheet] (https://devhints.io/semver) 
+    - [Devhints Semver Cheatsheet](https://devhints.io/semver) 
