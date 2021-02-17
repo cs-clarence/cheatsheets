@@ -132,13 +132,14 @@ A cheat sheet for uncommon Git commands
 ## Remote
 | Command | Description |
 | - | - |
-| `git remote -v`                           | List remote repositories |
-| `git remote show origin`                  | Show remote repository details |
-| `git remote add upstream <url>`           | Add remote upstream repository |
-| `git fetch upstream`                      | Fetch all remote branches |
-| `git rebase upstream/main`                | Refresh main branch from upstream |
-| `git remote -v`                           | List remote repositories |
-| `git push --tags`                         | Push tags to remote repository |
+| `git remote -v`                                       | List remote repositories |
+| `git remote show origin`                              | Show remote repository details |
+| `git remote add upstream <url>`                       | Add remote upstream repository |
+| `git fetch upstream`                                  | Fetch all remote branches |
+| `git rebase upstream/main`                            | Refresh main branch from upstream |
+| `git remote -v`                                       | List remote repositories |
+| `git push --tags`                                     | Push tags to remote repository |
+| `git push --set-upstream <upstream> <branch to push>` | Push a branch then set the upstream branch as well |
 
 ## Submodules
 - Submodules are a way to incorporate a git repository as a subdirectory in your repository.
