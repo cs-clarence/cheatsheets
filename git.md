@@ -190,6 +190,6 @@ A cheat sheet for uncommon Git commands
   4. `cd /`
 
 - Additional Sources
-[Github Git Cheat Sheet](https://training.github.com/downloads/github-git-cheat-sheet/)
-[Git Visual Cheat Sheet](https://ndpsoftware.com/git-cheatsheet.html)
-[Git Rebase In-Depth](https://git-rebase.io/)
+    - [Github Git Cheat Sheet](https://training.github.com/downloads/github-git-cheat-sheet/)
+    - [Git Visual Cheat Sheet](https://ndpsoftware.com/git-cheatsheet.html)
+    - [Git Rebase In-Depth](https://git-rebase.io/)
