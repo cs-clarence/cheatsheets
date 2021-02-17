@@ -61,6 +61,9 @@ A cheat sheet for uncommon Git commands
 | `git clean -f\|--force -d -x`                 | Recursively remove untracked and ignored files from the working tree |
 
 ## Changing Commits
+- `--soft` - only affects file in the `HEAD`
+- `--mixed` - only affects files in the `HEAD` and the staging/indexing area
+- `--hard`- affects the `HEAD`, staging/indexing area, and the working tree
 | Command | Description |
 | - | - |
 | `git reset --soft 5720fdf`                    | Reset current branch but not working area and staging area to specified commit |
@@ -82,7 +85,7 @@ A cheat sheet for uncommon Git commands
 | Command | Description |
 | - | - |
 | `git diff`                                | See difference between working area and current branch |
-| `git diff HEAD HEAD~2`                    | See difference between te current commit and two previous commits |
+| `git diff HEAD HEAD~2`                    | See difference between the current commit and two previous commits |
 | `git diff main other`                     | See difference between two branches |
 
 ## View
