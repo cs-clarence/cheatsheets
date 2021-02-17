@@ -127,7 +127,7 @@ A cheat sheet for uncommon Git commands
 | `git stash pop`                           | Apply and delete the last stash | 
 | `git stash clear`                         | Delete all the stash |
 | `git stash --patch`                       | Interactively choose which portion of the modified changes do you want to stash |
-| `git stash branch stashbranchname`        | Stash the staging area and create a new branch from it |
+| `git stash branch <stash branch name>`    | Stash the staging area and create a new branch from it |
 
 ## Tags
 | Command | Description |
