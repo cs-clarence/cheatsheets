@@ -64,6 +64,7 @@ A cheat sheet for uncommon Git commands
 - `--soft` - only affects file in the `HEAD`
 - `--mixed` - only affects files in the `HEAD` and the staging/indexing area
 - `--hard`- affects the `HEAD`, staging/indexing area, and the working tree
+
 | Command | Description |
 | - | - |
 | `git reset --soft 5720fdf`                    | Reset current branch but not working area and staging area to specified commit |
