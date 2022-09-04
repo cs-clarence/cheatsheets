@@ -25,6 +25,9 @@ A cheat sheet for uncommon Git commands
 | `git config --global user.email "foo@example.com"` | Set user email |
 
 ## Branches
+Branches are used to "branch off" from a commit from a branch. 
+Branches are essentially pointers to the "tip commit" of the current branch.
+What makes branches special is that if you create another commit to branch, the branch will automatically move it's pointer to that new commit.
 | Command | Description |
 | - | - |
 | `git branch foo`                              | Create a new branch |
@@ -108,10 +111,12 @@ A cheat sheet for uncommon Git commands
 | `git blame file.txt`                      | See who changed each line and when |
 
 ## Stash
+Stashes are used temporarily store changes on your current working tree so that you can a clean working tree and work on something else.
+Stashes are stack based and as such use `push` and `pop` operations.
 | Command | Description |
 | - | - |
 | `git stash push -m "Message"`             | Stash staged files, use `git stash save instead` |
-| `git stash save "Optional Message"`       | Stash staged files |
+| `git stash save "Optional Message"`       | Stash staged files, deprecated, use `git push` instead |
 | `git stash`                               | Stash staged files |
 | `git stash --include-untracked`           | Stash working area and staged files |
 | `git stash --keep-index`                  | Stash staged files, but don't remove them from staging area |
@@ -124,18 +129,22 @@ A cheat sheet for uncommon Git commands
 | `git stash apply --index stash@{0}`       | Apply and stage the named stash |
 | `git stash drop`                          | Delete the last stash | 
 | `git stash drop stash@{0}`                | Delete the named stash | 
-| `git stash pop`                           | Apply and delete the last stash | 
+| `git stash pop`                           | Apply and delete the top most stash (combination of `apply` and `drop`) | 
 | `git stash clear`                         | Delete all the stash |
 | `git stash --patch`                       | Interactively choose which portion of the modified changes do you want to stash |
 | `git stash branch <stash branch name>`    | Stash the staging area and create a new branch from it |
 
 ## Tags
+Tags are kind of similar to branches, both are used to point to a commit.
+Unlike branches, however, tags are immutable, you can't change the commit it's pointing to.
+Tags are useuful 
 | Command | Description |
 | - | - |
 | `git tag`                                                 | List all tags |
 | `git tag -a\|--annotate 0.0.1 -m\|--message "Message"`    | Create a tag |
 | `git tag -d\|--delete 0.0.1`                              | Delete a tag |
 | `git push --tags`                                         | Push tags to remote repository |
+| `git checkout <tag-annotation>`                           | Checkout to the specified tag |
 
 ## Remote
 | Command | Description |
@@ -192,4 +201,5 @@ A cheat sheet for uncommon Git commands
 - Additional Sources
     - [Github Git Cheat Sheet](https://training.github.com/downloads/github-git-cheat-sheet/)
     - [Git Visual Cheat Sheet](https://ndpsoftware.com/git-cheatsheet.html)
-    - [Git Rebase In-Depth](https://git-rebase.io/)
+    - [Git Rebase In-Depth](https://git-rebase.io)
+    - [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
