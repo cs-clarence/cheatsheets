@@ -19,6 +19,7 @@ A cheat sheet for uncommon Git commands
 - `git reset` will not move the HEAD but the branch that the HEAD is pointing to.
 
 ## Configuration
+
 | Command | Description |
 | - | - |
 | `git config --global user.name "foo"`              | Set user name |
@@ -185,6 +186,23 @@ once a file is staged, before adding it to .gitignore, you need to unstage it be
 | `git rm <files>`                             | Remove the file(s) from the index and working directory, but will warn you if you have unsaved changes |
 | `git rm --force <files>`                     | Force remove the file(s) from the index and working directory and disregarding any changes |
 
+## Committing
+Committing is the act of saving the staged changes into a "checkpoint" that you can go back to if you made a mistake in your current Working Tree.
+
+Commits, in git, are like singly linked list because they have a reference to a commit before them called a "parent commit". 
+The very first commit doesn't have a parent commit so it points to a null.
+```
+<- *a <- *b <- *c
+```
+In this visual, a, b, c are commits pointing to their respective parent commit.
+
+| Command | Description |
+| - | - |
+| `git commit -m "New message"`                 | Commit the staged changes with a message |
+| `git commit --amend -m "New message"`         | Update the last commit with the staged changes and a new message |
+| `git commit --amend --no-edit`                | Update the last commit with the staged changes but don't edit the message |
+| `git commit --fixup 5720fdf -m "New message"` | Merge into the specified commit |
+
 ## Cleaning the Working Tree
 
 | Command | Description |
@@ -196,22 +214,24 @@ once a file is staged, before adding it to .gitignore, you need to unstage it be
 
 | Command | Description |
 | - | - |
-| `git reset --hard 5720fdf`                    | Reset current branch, staging area and working area to the specified commit |
-| `git commit --amend -m "New message"`         | Change the last commit message |
-| `git commit --amend --no-edit`                | Update the last commit but don't edit the message |
-| `git commit --fixup 5720fdf -m "New message"` | Merge into the specified commit |
 | `git revert 5720fdf`                          | Revert a commit |
 | `git rebase --interactive [origin/main]`      | Rebase a PR (`git pull` first) |
 | `git rebase --interactive 5720fdf`            | Rebase to a particular commit |
 | `git rebase --interactive --root 5720fdf`     | Rebase to the root commit |
 | `git rebase --continue`                       | Continue an interactive rebase |
 | `git rebase --abort`                          | Cancel an interactive rebase |
+
+## Cherry-Picking Commits
+
+| Command | Description|
+| - | - |
 | `git cherry-pick 5720fdf`                     | Copy the commit to the current branch |
 
 ## To Rebase or To Merge
 There has a been discussion among git users as to which approach is better. The common advise is to never rebase anything branch that is public, public meaning there is more than one developer working on the branch. As for private branches, do what you prefer. 
 
 ## Compare
+
 | Command | Description |
 | - | - |
 | `git diff`                                | See difference between working area and current branch |
@@ -219,6 +239,7 @@ There has a been discussion among git users as to which approach is better. The 
 | `git diff main other`                     | See difference between two branches |
 
 ## View
+
 | Command | Description |
 | - | - |
 | `git log`                                 | See commit list |
@@ -233,6 +254,7 @@ There has a been discussion among git users as to which approach is better. The 
 | `git blame file.txt`                      | See who changed each line and when |
 
 ## Stash
+
 Stashes are used **temporarily store your staged changes** so that you can a clean working tree and work on something else.
 Stashes are stack based and as such use `push` and `pop` operations.
 | Command | Description |
@@ -273,13 +295,8 @@ Tags are useuful
 | Command | Description |
 | - | - |
 | `git remote -v`                                       | List remote repositories |
-| `git remote show origin`                              | Show remote repository details |
-| `git remote add upstream <url>`                       | Add remote upstream repository |
-| `git fetch upstream`                                  | Fetch all remote branches |
-| `git rebase upstream/main`                            | Refresh main branch from upstream |
-| `git remote -v`                                       | List remote repositories |
-| `git push --tags`                                     | Push tags to remote repository |
-| `git push --set-upstream <upstream> <branch to push>` | Push a branch then set the upstream branch as well |
+| `git remote show <remote>`                            | Show remote repository details |
+| `git remote add <remote> <url>`                       | Add remote upstream repository |
 
 ## Submodules
 - Submodules are a way to incorporate a git repository as a subdirectory in your repository.
