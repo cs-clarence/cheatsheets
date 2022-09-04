@@ -138,8 +138,9 @@ There are cases against both of types, fast forward looks cleaner but informatio
 
 | Command | Description|
 | - | - |
-| `git merge <source-branch>`                               | Merge branch into current branch |
-| `git merge --no-ff <source-branch>`                       | Merge branch into current branch but don't use fast forward even if possible |
+| `git merge <source-branch>`                               | Merge source into current branch |
+| `git merge <source-branch> <destination-branch`           | Merge source into destination |
+| `git merge --no-ff <source-branch>`                       | Merge source into current branch but don't use fast forward even if possible |
 
 ## Pulling and Fetching
 Pulling and fetching are used to download commits and files from remote repositories.
