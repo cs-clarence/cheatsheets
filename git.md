@@ -39,8 +39,6 @@ What makes branches special is that if you create another commit to branch, the 
 | `git branch --set-upstream-to repo/branch`    | Set an upstream branch in the current repository |
 | `git checkout -b <new-branch>`                | Create and switch to a branch using HEAD as the base, you can also use `git switch -c` |
 | `git checkout -b <new-branch> <source>`       | Create and switch to a branch using the specified source as the base |
-| `git switch foo`                              | Switch to a branch |
-| `git switch --create\|-c foo`                 | Create and switch to a branch |
 
 ## Manipulating the HEAD
 HEAD is a pointer to a commit or a branch, we can move it to a source (commit, branch, tag, or HEAD itself) using the `git checkout` command. Moving the HEAD also will also update the contents of Working and Index Tree. Moving to a commit other than a tip commit of a branch will result in a state called `detached head`, this is normal when you're just inspecting the content of a specific commit.
@@ -169,11 +167,7 @@ once a file is staged, before adding it to .gitignore, you need to unstage it be
 | `git rm <files>`                             | Remove the file(s) from the index and working directory, but will warn you if you have unsaved changes |
 | `git rm --force <files>`                     | Force remove the file(s) from the index and working directory and disregarding any changes |
 
-## Restoring Files In The Working Tree
-| Command | Description |
-| - | - |
-| `git restore --staged files.txt`              | Restore changes to one or more files in the staging area, using the HEAD as a source |
-| `git restore --staged --worktree files.txt`   | Restore changes to one or more files in the staging and working area, using the HEAD as a source |
+## Cleaning the Working Tree
 | `git clean -f\|--force -d`                    | Recursively remove untracked files from the working tree |
 | `git clean -f\|--force -d -x`                 | Recursively remove untracked and ignored files from the working tree |
 
