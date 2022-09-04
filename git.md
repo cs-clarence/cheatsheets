@@ -25,23 +25,61 @@ A cheat sheet for uncommon Git commands
 | `git config --global user.email "foo@example.com"` | Set user email |
 
 ## Branches
-Branches are used to "branch off" from a commit from a branch. 
+Branches are used to "branch off" from a commit. 
 Branches are essentially pointers to the "tip commit" of the current branch.
 What makes branches special is that if you create another commit to branch, the branch will automatically move it's pointer to that new commit.
+
 | Command | Description |
 | - | - |
-| `git branch foo`                              | Create a new branch |
-| `git branch -d foo`                           | Deletes a branch |
+| `git branch`                                  | List all the branches |
+| `git branch -r`                               | List all remote branches |
+| `git branch --merged`                         | List all merged branches |
+| `git branch <branch-name>`                    | Create a new branch |
+| `git branch -d <branch-name>`                 | Deletes a branch |
 | `git branch --set-upstream-to repo/branch`    | Set an upstream branch in the current repository |
-| `git checkout file.js`                        | Acts like `git reset --hard branch -- file.js`, replaces file in the three trees, does not do a merge, not working-tree safe |
-| `git checkout foo`                            | Moves the HEAD to point to the commit that the branch is pointing to, also moves the three trees, it's more Working Tree safe because it also does a merge, use `git switch` instead |
-| `git checkout -b foo`                         | To create and switch to a branch, use `git switch -c` instead |
-| `git switch foo`                              | To switch to a branch |
-| `git switch --create\|-c foo`                 | To create and switch to a branch |
+| `git checkout -b <new-branch>`                | Create and switch to a branch using HEAD as the base, you can also use `git switch -c` |
+| `git checkout -b <new-branch> <source>`       | Create and switch to a branch using the specified source as the base |
+| `git switch foo`                              | Switch to a branch |
+| `git switch --create\|-c foo`                 | Create and switch to a branch |
+
+## Manipulating the HEAD
+HEAD is a pointer to a commit or a branch, we can move it to a source (commit, branch, tag, or HEAD itself) using the `git checkout` command. Moving the HEAD also will also update the contents of Working and Index Tree. Moving to a commit other than a tip commit of a branch will result in a state called `detached head`, this is normal when you're just inspecting the content of a specific commit.
+
+| Command | Description |
+| - | - |
+| `git checkout <source>` | Move the head to a source, updating the content of working and index tree |
+
+## Resetting Files in the Working Tree
+`git checkout` also has other uses other than moving the HEAD which is resetting specific files in the Working Tree based on a source by providing paths. This is different than regular checkout because it doesn't move the HEAD and just affects the Working Tree.
+
+| Command | Description |
+| - | - |
+| `git checkout <source> <files>` | Reset files in the working tree based on the source |
+
+## Manipulating Branches
+As previously mentioned, a branch is nothing more than a pointer to a commit that moves when a new commit is added. Being a pointer, we can change where it is pointing to using the `git reset` command. Unlike `git checkout`, which moves the HEAD tree itself, `git reset` moves the current branch itself to a source. Remember that the HEAD, when attached, also points to the current branch, so the effect is as if the HEAD also moved. The source can either be a branch, a commit, the HEAD, or a tag. Be very careful when using this because resetting a branch to a previous commit also effectively drops the commits after that previous commit. Reset can also cascade it's effects to the working tree and index tree.
+
+`git reset` flags that can be used to specify which trees should be affected
+- `--soft` - only affects the `HEAD`
+- `--mixed` - only affects the `HEAD` and the staging/indexing area, this is the default when neither of the three flags is provided
+- `--hard`- affects the `HEAD`, staging/indexing area, and the working tree
+
+| Command | Description |
+| - | - |
+| `git reset --soft <source>`                           | Reset changes only in the HEAD tree based on the source |
+| `git reset <source>` or `git reset --mixed <source>`  | Reset changes in the index and HEAD tree based on the source |
+| `git reset --hard <source>`                           | Reset changes in working, index, and HEAD tree based on the source |
+
+## Resetting Files in the Index/Staging Tree
+`git reset` has other use besides moving the branch, it can also reset files in the index tree using a source when provided with paths. Unlike the regular `git reset`, however, it does not move the branch to the source, it merely affects the files in the index tree. This use of reset can only use the `--mixed` flag because it wouldn't make sense to use the other flags otherwise.
+
+| Command | Description |
+| - | - |
+| `git reset <source> <files>` or `git reset --mixed <source> <files>` | Reset the files in the index tree based on the source |
 
 ## Merging
 Merging is the act of applying the changes of a `<source-branch>` into a destination branch (which is the current branch).
-Merging can either be a `3-way merge` (AKA `merge commit`) or `fast-forwarded merge`, git will choose one of the two based on the situation.
+Merging can either be a `3-way merge` (AKA `merge commit`) or `fast-forwarded merge`, git will choose one of the two depending on the situation.
 
 `3-way merge` creates a special commit called a `merge commit`. A merge commit is special because it has two parents commits which are the tip commits of the two branches being merged. If there are no conflicts between the two commits, a `merge commit` will be made on the current branch.
 
@@ -74,6 +112,7 @@ Merging can either be a `3-way merge` (AKA `merge commit`) or `fast-forwarded me
     
 `fast-forward merge` is used when the destination branch has no other commits after the commit where the source branch is branched off of.
 Git will take advantage of that by just moving pointer of the destination branch to the commit where the source branch is pointing to.
+
 `before merge`
 ```
          master (destination)
@@ -104,44 +143,43 @@ There are cases against both of types, fast forward looks cleaner but informatio
 | `git merge <source-branch>`                               | Merge branch into current branch |
 | `git merge --no-ff <source-branch>`                       | Merge branch into current branch but don't use fast forward even if possible |
 
-## Pulling
-Pulling is 
+## Pulling and Fetching
+Pulling and fetching are used to download commits and files from remote repositories.
+
 | Command | Description |
 | - | - |
 | `git pull --rebase --prune`               | Get latest, rebase any changes not checked in and delete branches that no longer exist | 
 
-## Staged Changes
-- `--soft` - only affects file in the `HEAD`
-- `--mixed` - only affects files in the `HEAD` and the staging/indexing area
-- `--hard`- affects the `HEAD`, staging/indexing area, and the working tree
+## Staging Files
+Staging is the act of preparing changes that should be committed and files to be tracked. Once a file is staged, git will automatically track it's changes by compare the file in the staging/index tree and the one from the working tree. Once changes are mod to tracked files, changes to them need to be readded using `git add` before you can commit them.
 
 | Command | Description |
 | - | - |
-| `git add file.txt`                            | Stage file |
+| `git add file.txt`                            | Stage file/changes to a file |
+| `git add .`                                   | Stage all file/changes to files |
 | `git add --patch file.txt`                    | Stage some but not all changes in a file |
-| `git mv file1.txt file2.txt`                  | Move/rename file |
-| `git rm --cached file.txt`                    | Remove the file from the index |
-| `git rm file.txt`                             | Remove the file from the index and working directory, but will warn you if you have unsaved changes |
-| `git rm --force file.txt`                     | Unstage and delete file, even the files with unsaved changes |
-| `git reset HEAD`                              | Reset changes in the index area and use HEAD as the source, use `git restore --staged` instead |
-| `git reset --hard HEAD`                       | Unstage and delete changes in index/staging area and working directory |
-| `git reset file.txt`                          | Unstange a file, more specifically restore the state of the file in the staging area with the one in the HEAD as a source, sames as `git reset --mixed file.txt`|
-| `git reset eb34f -- file.txt`                 | Unstange a file, more specifically restore the state of the file in the staging area with the one in the commit eb34f as a source, sames as `git reset eb34f --mixed file.txt`|
+
+## Unstaging Files
+Sometimes you need to remove file(s) from the staging/index tree. A common use-case for this is when adding a new entry to a .gitignore file;
+once a file is staged, before adding it to .gitignore, you need to unstage it before before git to actually start ignoring it.
+
+| Command | Description |
+| - | - |
+| `git rm --cached <files>`                    | Remove the file(s) from the index |
+| `git rm <files>`                             | Remove the file(s) from the index and working directory, but will warn you if you have unsaved changes |
+| `git rm --force <files>`                     | Force remove the file(s) from the index and working directory and disregarding any changes |
+
+## Restoring Files In The Working Tree
+| Command | Description |
+| - | - |
 | `git restore --staged files.txt`              | Restore changes to one or more files in the staging area, using the HEAD as a source |
 | `git restore --staged --worktree files.txt`   | Restore changes to one or more files in the staging and working area, using the HEAD as a source |
 | `git clean -f\|--force -d`                    | Recursively remove untracked files from the working tree |
 | `git clean -f\|--force -d -x`                 | Recursively remove untracked and ignored files from the working tree |
 
-## Changing Commits
-- `--soft` - only affects file in the `HEAD`
-- `--mixed` - only affects files in the `HEAD` and the staging/indexing area
-- `--hard`- affects the `HEAD`, staging/indexing area, and the working tree
-
+## Rebasing
 | Command | Description |
 | - | - |
-| `git reset --soft 5720fdf`                    | Reset current branch but not working area and staging area to specified commit |
-| `git reset --mixed 5720fdf`                   | Reset current branch, staging area but not the working area to the specified commit, `--mixed` is the default flag for every reset command |
-| `git reset HEAD~1`                            | Reset the current branch and working area and staging area to the previous commit, same as `git reset --mixed` |
 | `git reset --hard 5720fdf`                    | Reset current branch, staging area and working area to the specified commit |
 | `git commit --amend -m "New message"`         | Change the last commit message |
 | `git commit --amend --no-edit`                | Update the last commit but don't edit the message |
@@ -176,15 +214,16 @@ Pulling is
 | `git blame file.txt`                      | See who changed each line and when |
 
 ## Stash
-Stashes are used temporarily store changes on your current working tree so that you can a clean working tree and work on something else.
+Stashes are used **temporarily store your staged changes** so that you can a clean working tree and work on something else.
 Stashes are stack based and as such use `push` and `pop` operations.
 | Command | Description |
 | - | - |
-| `git stash push -m "Message"`             | Stash staged files, use `git stash save instead` |
-| `git stash save "Optional Message"`       | Stash staged files, deprecated, use `git push` instead |
-| `git stash`                               | Stash staged files |
-| `git stash --include-untracked`           | Stash working area and staged files |
-| `git stash --keep-index`                  | Stash staged files, but don't remove them from staging area |
+| `git stash push -m "Message"`             | Stash staged changes |
+| `git stash push -m "Message"` <files...>  | Stash staged changes but only from on specified files |
+| `git stash save "Optional Message"`       | Stash staged changes, deprecated, use `git push` instead |
+| `git stash`                               | Stash staged changes |
+| `git stash --include-untracked`           | Stash working area and staged changes |
+| `git stash --keep-index`                  | Stash staged changes, but don't remove them from staging area |
 | `git stash show.txt`                      | Show stash summary for file | 
 | `git stash list`                          | List stashes |
 | `git stash list stash@{0}`                | Show information about the first stash |
