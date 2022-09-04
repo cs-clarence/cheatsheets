@@ -143,11 +143,28 @@ There are cases against both of types, fast forward looks cleaner but informatio
 | `git merge --no-ff <source-branch>`                       | Merge source into current branch but don't use fast forward even if possible |
 
 ## Pulling and Fetching
-Pulling and fetching are used to download commits and files from remote repositories.
+Pulling and fetching are used to download commits and files from remote repositories. 
+Even though the two are similar, they have different use-cases.
+`git fetch` is the safer of the two because it only download the content from the remote repository into your local fetched content but not update your local branches so it has no effect on local development work. 
+Git is able to do this because isolates fetched remote content from local content. 
+
+`git pull` on the other hand also updates your local branches.
+Pull is actually composed of two actions, a `git fetch` and a `git merge` (or `git rebase` if `--rebase` flag is provided).
+Using the bare `git pull` command will target the current branch, fetch it's content from the remote version of the branch, then merge remote branch into the local branch.
+The merge can either be a `3-way merge` or a `fast-forward merge` depending on the situation.
+The `--rebase` flag can provided to use a rebase instead of a merge after fetching, in this case, the local branch will be rebased to the remote branch.
 
 | Command | Description |
 | - | - |
-| `git pull --rebase --prune`               | Get latest, rebase any changes not checked in and delete branches that no longer exist | 
+| `get fetch` | Fetches all content of origin (the default when no remote is provided) remote repository |
+| `get fetch <remote>` | Fetches all content of the specified repository |
+| `get fetch <remote> <branch>` | Fetches all content of specified remote branch repositories |
+| `get fetch --all` | Fetches all content of every remote repositories into the local repository |
+| `get pull` | Fetch the current branch from the remote repository and merge it into the local version |
+| `get pull <remote>` | Fetch the current branch from the specified remote repository and merge it into the local version |
+| `get pull <remote> <branch>` | Fetch the specified branch from the specified remote repository and merge it into the current local branch |
+| `get pull --rebase` | Fetch the current branch from the remote repository and the local version to the remote version |
+| `git pull --rebase --prune` | Get latest, rebase any changes not checked in and delete branches that no longer exist | 
 
 ## Staging Files
 Staging is the act of preparing changes that should be committed and files to be tracked. Once a file is staged, git will automatically track it's changes by compare the file in the staging/index tree and the one from the working tree. Once changes are mod to tracked files, changes to them need to be readded using `git add` before you can commit them.
@@ -169,10 +186,14 @@ once a file is staged, before adding it to .gitignore, you need to unstage it be
 | `git rm --force <files>`                     | Force remove the file(s) from the index and working directory and disregarding any changes |
 
 ## Cleaning the Working Tree
+
+| Command | Description |
+| - | - |
 | `git clean -f\|--force -d`                    | Recursively remove untracked files from the working tree |
 | `git clean -f\|--force -d -x`                 | Recursively remove untracked and ignored files from the working tree |
 
 ## Rebasing
+
 | Command | Description |
 | - | - |
 | `git reset --hard 5720fdf`                    | Reset current branch, staging area and working area to the specified commit |
@@ -186,6 +207,9 @@ once a file is staged, before adding it to .gitignore, you need to unstage it be
 | `git rebase --continue`                       | Continue an interactive rebase |
 | `git rebase --abort`                          | Cancel an interactive rebase |
 | `git cherry-pick 5720fdf`                     | Copy the commit to the current branch |
+
+## To Rebase or To Merge
+There has a been discussion among git users as to which approach is better. The common advise is to never rebase anything branch that is public, public meaning there is more than one developer working on the branch. As for private branches, do what you prefer. 
 
 ## Compare
 | Command | Description |
