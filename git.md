@@ -4,7 +4,7 @@ A cheat sheet for uncommon Git commands
 ## Git - The Three Trees
 - Git always has three trees at the minimum:
     - Working Tree - this tree has all the untracked and tracked files in your repository, this is also where modifications first appear.
-    - Index Tree - this is the proposed commit tree, where you add all the files that you want to commit. If a file reaches this tree, it's automatically tracked by git. It is also called the staging area.
+    - Index Tree - this is the proposed commit tree, where you add all the changes that you want to commit. If a file reaches this tree, it's automatically tracked by git. It is also called the staging area.
     - HEAD Tree - this tree points to your current branch, which in turn points to a commit. So the HEAD transitively points to the commit that the current branch is pointing. The commit that is pointed by the HEAD will be the parent of your next commit.
 - Git always compares these three trees to determine the changes in your files. The `git status` command will show modifications in the working tree that are not in the index.
 - Once you stage the changes in the working tree, they get added to the index tree, which will make the working and index tree the same, but not the HEAD tree.
@@ -38,9 +38,74 @@ What makes branches special is that if you create another commit to branch, the 
 | `git checkout -b foo`                         | To create and switch to a branch, use `git switch -c` instead |
 | `git switch foo`                              | To switch to a branch |
 | `git switch --create\|-c foo`                 | To create and switch to a branch |
-| `git merge foo`                               | Merge branch into current branch 
+
+## Merging
+Merging is the act of applying the changes of a `<source-branch>` into a destination branch (which is the current branch).
+Merging can either be a `3-way merge` (AKA `merge commit`) or `fast-forwarded merge`, git will choose one of the two based on the situation.
+
+`3-way merge` creates a special commit called a `merge commit`. A merge commit is special because it has two parents commits which are the tip commits of the two branches being merged. If there are no conflicts between the two commits, a `merge commit` will be made on the current branch.
+
+`before merge`
+```
+         master (destination)
+           |
+           v
+ <- *a <- *b <- *e
+           ^
+            \
+             <- *c <- *d
+                       ^
+                       |
+                    feature (source)
+```
+`after merge`
+```
+                         master (destination)
+                           |
+                           v
+ <- *a <- *b <- *e <----- *f (merge commit)
+           ^             /
+            \           v
+             <- *c <- *d
+                       ^
+                       |
+                    feature (source)
+```
+    
+`fast-forward merge` is used when the destination branch has no other commits after the commit where the source branch is branched off of.
+Git will take advantage of that by just moving pointer of the destination branch to the commit where the source branch is pointing to.
+`before merge`
+```
+         master (destination)
+           |
+           v
+ <- *a <- *b (no more commit after commit b, fast forward will be used when merging the feature branch)
+           ^
+            \
+             <- *c <- *d
+                       ^
+                       |
+                    feature (source)
+```
+`after merge`
+```
+ <- *a <- *b        master (destination, fast forwarded)
+           ^           |
+            \          v
+             <- *c <- *d
+                       ^
+                       |
+                    feature (source)
+```
+There are cases against both of types, fast forward looks cleaner but information about the git history is lost because of the fact that there will be no information about where the merge has happened due to the lack of a merge commit. The `--no-ff` flag will disable fast forward merges even if they're possible to do.
+
+| Command | Description|
+| - | - |
+| `git merge <source-branch>`                               | Merge branch into current branch |
+| `git merge --no-ff <source-branch>`                       | Merge branch into current branch but don't use fast forward even if possible |
 
 ## Pulling
+Pulling is 
 | Command | Description |
 | - | - |
 | `git pull --rebase --prune`               | Get latest, rebase any changes not checked in and delete branches that no longer exist | 
@@ -203,3 +268,4 @@ Tags are useuful
     - [Git Visual Cheat Sheet](https://ndpsoftware.com/git-cheatsheet.html)
     - [Git Rebase In-Depth](https://git-rebase.io)
     - [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
+    - [Git Merge](https://www.atlassian.com/git/tutorials/using-branches/git-merge)
