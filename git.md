@@ -211,7 +211,7 @@ In this visual, a, b, c are commits pointing to their respective parent commit.
 | `git clean -f\|--force -d -x`                 | Recursively remove untracked and ignored files from the working tree |
 
 ## Rebasing
-
+Rebasing is the act of reapplying the commits on your branch to a new parent commit (usually the tip commit of a branch).
 | Command | Description |
 | - | - |
 | `git revert 5720fdf`                          | Revert a commit |
@@ -221,11 +221,55 @@ In this visual, a, b, c are commits pointing to their respective parent commit.
 | `git rebase --continue`                       | Continue an interactive rebase |
 | `git rebase --abort`                          | Cancel an interactive rebase |
 
+## Reverting Changes
+`git revert` is a safe undo operation that creates a new commit (also called a revert commit) that is the inverse of the commit being undone. This is the better way of reverting changes because it doesn't delete commits and modify the history of the branch, it instead appends to the history by making the undo operating also a commit.
+
+Before revert:
+```
+a <- b <- c
+```
+
+After revert: (git revert b)
+```
+a <- b <- c <- d (inverse of b)
+```
+
+| Command | Description |
+| - | - |
+| `git revert 5720fdf`                          | Revert a commit |
+
 ## Cherry-Picking Commits
+
+Cherry-picking is the act of selecting a specific commit to be appened to the current branch. This is powerful but can also be a dangerous feature. It can used to quickly applying a commit fixing a bug to the current branch.
+
+Before cherry pick:
+```
+
+        hotfix
+          |
+          V
+a <- b <- c (master branch)
+     ^
+       \ x <- y <- z (current branch)
+```
+
+After cherry pick:
+```
+master
+        hotfix
+          |
+          V
+a <- b <- c  (master branch)
+     ^
+       \ x <- y <- z <- c (current branch) // after command: git cherry-pick c
+                        ^
+                        |
+                        applied the hotfix to the current branch
+```
 
 | Command | Description|
 | - | - |
-| `git cherry-pick 5720fdf`                     | Copy the commit to the current branch |
+| `git cherry-pick 5720fdf`                     | Append the commit to the current branch |
 
 ## To Rebase or To Merge
 There has a been discussion among git users as to which approach is better. The common advise is to never rebase anything branch that is public, public meaning there is more than one developer working on the branch. As for private branches, do what you prefer. 
