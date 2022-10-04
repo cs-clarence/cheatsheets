@@ -214,7 +214,7 @@ In this visual, a, b, c are commits pointing to their respective parent commit.
 Rebasing is the act of reapplying the commits on your branch to a new parent commit (usually the tip commit of a branch).
 | Command | Description |
 | - | - |
-| `git revert 5720fdf`                          | Revert a commit |
+| `git rebase <base-commit>`                    | Rebase the current branch to a new base commit, can also be a branch name |
 | `git rebase --interactive [origin/main]`      | Rebase a PR (`git pull` first) |
 | `git rebase --interactive 5720fdf`            | Rebase to a particular commit |
 | `git rebase --interactive --root 5720fdf`     | Rebase to the root commit |
