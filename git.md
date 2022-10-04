@@ -234,7 +234,7 @@ There has a been discussion among git users as to which approach is better. The 
 
 | Command | Description |
 | - | - |
-| `git diff`                                | See difference between working area and current branch |
+| `git diff`                                | See difference between working tree and HEAD tree |
 | `git diff HEAD HEAD~2`                    | See difference between the current commit and two previous commits |
 | `git diff main other`                     | See difference between two branches |
 
