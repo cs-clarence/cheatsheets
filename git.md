@@ -255,19 +255,17 @@ There has a been discussion among git users as to which approach is better. The 
 
 ## Stash
 
-Stashes are used **temporarily store your staged changes** so that you can a clean working tree and work on something else.
+Stashes are used **temporarily store your (staged and unstaged) changes** so that you can a clean working tree and work on something else.
 Stashes are stack based and as such use `push` and `pop` operations.
 | Command | Description |
 | - | - |
-| `git stash push -m "Message"`             | Stash staged changes |
-| `git stash push -m "Message"` <files...>  | Stash staged changes but only from on specified files |
-| `git stash save "Optional Message"`       | Stash staged changes, deprecated, use `git push` instead |
-| `git stash`                               | Stash staged changes |
-| `git stash --include-untracked`           | Stash working area and staged changes |
-| `git stash --keep-index`                  | Stash staged changes, but don't remove them from staging area |
-| `git stash show.txt`                      | Show stash summary for file | 
+| `git stash push -m "Message"`             | Stash changes |
+| `git stash push -m "Message"` <files...>  | Stash changes but only from on specified files |
 | `git stash list`                          | List stashes |
 | `git stash list stash@{0}`                | Show information about the first stash |
+| `git stash --include-untracked/-u`        | Stash changes including new (untracked/not `git add`ed) files |
+| `git stash --keep-index`                  | Stash staged changes, but don't remove them from staging area |
+| `git stash show.txt`                      | Show stash summary for file | 
 | `git stash apply`                         | Moved last stash to working area |
 | `git stash apply stash@{0}`               | Moved named stash to working area |
 | `git stash apply --index`                 | Apply and stage the last stash |
@@ -277,7 +275,7 @@ Stashes are stack based and as such use `push` and `pop` operations.
 | `git stash pop`                           | Apply and delete the top most stash (combination of `apply` and `drop`) | 
 | `git stash clear`                         | Delete all the stash |
 | `git stash --patch`                       | Interactively choose which portion of the modified changes do you want to stash |
-| `git stash branch <stash branch name>`    | Stash the staging area and create a new branch from it |
+| `git stash branch <stash branch name>`    | Stash changes and create a new branch from it |
 
 ## Tags
 Tags are kind of similar to branches, both are used to point to a commit.
